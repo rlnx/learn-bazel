@@ -1,8 +1,8 @@
-#include "func_a.hpp"
+#include "foo.hpp"
 
 int main(int argc, char const *argv[]) {
-  proj::func_a<int>();
-  proj::func_a<float>();
-  proj::func_a<double>();
+  proj::foo(proj::cpu_feature::avx);
+  proj::foo(proj::cpu_feature::avx2);
+  proj::foo(proj::cpu_feature::avx512);
   return 0;
 }
