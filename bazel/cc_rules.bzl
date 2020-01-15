@@ -1,11 +1,7 @@
 load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
 
 def _define_by_cpu(cpu):
-    return {
-        "avx": "proj::cpu_dispatch::avx",
-        "avx2": "proj::cpu_dispatch::avx2",
-        "avx512": "proj::cpu_dispatch::avx512",
-    }[cpu]
+    return "_CPU_=proj::cpu_dispatch::" + cpu
 
 def _compile(name, ctx, feature_configuration, cc_toolchain, local_defines=[]):
     compilation_ctx, compilation_out = cc_common.compile(
@@ -29,13 +25,13 @@ def _compile_multicpu(name, ctx, feature_configuration, cc_toolchain):
             ctx,
             feature_configuration,
             cc_toolchain,
-            local_defines = ["_CPU_=" + _define_by_cpu(cpu)]
+            local_defines = [_define_by_cpu(cpu)]
         )
         compilation_ctxs.append(local_compilation_ctx)
         compilation_outs.append(local_compilation_out)
     return compilation_ctxs, compilation_outs
 
-def _crate_cc_info_from_multiple_compilation_contexts(compilation_ctxs, linking_ctx):
+def _create_cc_info_from_multiple_compilation_contexts(compilation_ctxs, linking_ctx):
     cc_infos = []
     for cctx in compilation_ctxs:
         local_cc_info = CcInfo(
@@ -71,7 +67,7 @@ def _cc_multicpu_library_impl(ctx):
     )
     files_to_build = (merged_compilation_outs.pic_objects +
                       merged_compilation_outs.objects)
-    cc_info = _crate_cc_info_from_multiple_compilation_contexts(
+    cc_info = _create_cc_info_from_multiple_compilation_contexts(
         compilation_ctxs,
         linking_ctx
     )
