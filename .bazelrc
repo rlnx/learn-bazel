@@ -1,0 +1,6 @@
+# See https://github.com/bazelbuild/bazel/issues/7260
+build --incompatible_enable_cc_toolchain_resolution
+
+# build:clang --@//bazel:compiler=clang
+# build:x86_32/clang --//bazel:compiler_name=clang --//bazel:arch=x86_32
+# build:x86_64/clang --//bazel:compiler_name=clang --//bazel:arch=x86_64

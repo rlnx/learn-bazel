@@ -1,16 +1,19 @@
-load("//bazel:cc_rules.bzl", "cc_multicpu_library")
+load("//bazel:cpp_rules.bzl", "cpp_module")
 
-cc_multicpu_library(
-  name = "foo",
-  hdrs = ["foo.hpp"],
-  srcs = ["foo.cpp"],
-  cpus = ["avx", "avx2", "avx512"]
+# cc_library(
+#     name = "foo_headers",
+#     hdrs = ["foo.hpp"],
+# )
+
+cpp_module(
+    name = "foo",
+    srcs = ["foo.cpp"],
+    hdrs = ["foo.hpp"]
+    # deps = [":foo_headers"],
 )
 
-cc_binary(
-  name = "main",
-  srcs = ["main.cpp"],
-  deps = [
-    ":foo",
-  ],
-)
+# cpp_module(
+#     name = "proj",
+#     srcs = ["main.cpp"],
+#     deps = [":foo"],
+# )
